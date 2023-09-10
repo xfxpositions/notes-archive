@@ -55,15 +55,6 @@ fn render_markdown(content: &String) -> String {
     return markdown::to_html(content);
 }
 
-fn mut_find_or_insert<T: PartialEq>(vec: &mut Vec<T>, val: T) -> &mut T {
-    if let Some(i) = vec.iter().position(|each| *each == val) {
-        &mut vec[i]
-    } else {
-        vec.push(val);
-        vec.last_mut().unwrap()
-    }
-}
-
 #[tokio::main]
 async fn main() {
     let mut router = Router::new();
@@ -135,6 +126,10 @@ async fn main() {
 
     let vir_path = format!("{}/:*fpath", PUBLIC_VIR_DIR);
     router.get(vir_path.as_str(), vec![file_handler]);
+
+    let edit_file: HandlerFn = handler!(req, res, {});
+
+    router.post("/edit/:*fpath", vec![edit_file]);
 
     println!("listenign 8080!");
     router.listen(8080).await;

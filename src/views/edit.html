@@ -1,0 +1,54 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <textarea
+      required
+      id="content"
+      placeholder="content"
+      rows="30"
+      cols="60"
+    ></textarea>
+    <input id="password" placeholder="password" type="text" />
+    <button id="send">send</button>
+
+    <script>
+      const contentText = document.getElementById("content");
+      const passwordText = document.getElementById("password");
+
+      const sendBtn = document.getElementById("send");
+      contentText.value = fcontent;
+
+      async function submit() {
+        const json = JSON.stringify({
+          content: contentText.value,
+          password: password.value,
+        });
+        console.log(json);
+
+        if (!contentText.value) {
+          alert("please just provide a content");
+          return;
+        } else {
+          try {
+            let response = await fetch(`/edit/${fpath}`, {
+              method: "POST",
+              body: json,
+            });
+            console.log(response);
+          } catch (e) {
+            console.log("error", e);
+          }
+        }
+      }
+
+      sendBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await submit();
+      });
+    </script>
+  </body>
+</html>
